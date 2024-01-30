@@ -1,0 +1,51 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
+
+<div class="container">
+    <hr>
+    <h2>categorias</h2>
+    <hr>
+    <a class="btn btn-info" href="/admin/categories/new">Criar nova categoria</a>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>título</th>
+                <th>Slug</th>
+                <th>Acções</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% categories.forEach(category => { %>
+                <tr>
+                    <th><%= category.id %></th>
+                    <th><%= category.title %></th>
+                    <th><%= category.slug %></th>
+                    <th>
+                        <a href="/admin/categories/edit/<%= category.id %>" class="btn btn-warning">Edit</a>
+
+                        <form method="POST" action="/categories/delete" style="display:inline" onsubmit="confirmarDelecao(event, this)">
+                            <input type="hidden" name="id" value="<%= category.id %>">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </th>
+                </tr>
+            <% }) %>    
+        </tbody>
+    </table>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>
+<script>
+    function confirmarDelecao(event, form){
+        event.preventDefault()
+        var decision = confirm("você quer deletar essa categoria?")
+        if(decision){
+            form.submit()
+        } else{
+            console.log("não quero deletar")
+        }
+
+    }
+</script>
